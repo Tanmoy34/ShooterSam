@@ -10,6 +10,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "MovieSceneTracksComponentTypes.h"
 #include "ShooterSam.h"
 
 AShooterSamCharacter::AShooterSamCharacter()
@@ -65,6 +66,9 @@ void AShooterSamCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInpu
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AShooterSamCharacter::Look);
+
+		//Shooting
+		EnhancedInputComponent->BindAction(ShootAction, ETriggerEvent::Started, this, &AShooterSamCharacter::Shoot);
 	}
 	else
 	{
@@ -131,3 +135,29 @@ void AShooterSamCharacter::DoJumpEnd()
 	// signal the character to stop jumping
 	StopJumping();
 }
+
+void AShooterSamCharacter::Shoot()
+{
+	if (Gun)
+	{
+		Gun->PullTrigger();
+	}
+}
+
+void AShooterSamCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	
+	GetMesh()->HideBoneByName("weapon_r",PBO_None);
+
+	Gun = GetWorld()->SpawnActor<AGun>(GunClass);
+	if (Gun)
+	{
+		Gun->SetOwner(this);
+		
+		Gun->AttachToComponent(GetMesh(),FAttachmentTransformRules::KeepRelativeTransform,TEXT("WeaponSocket"));
+	}
+}
+
+

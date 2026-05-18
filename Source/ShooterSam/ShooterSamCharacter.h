@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Gun.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
 #include "ShooterSamCharacter.generated.h"
@@ -37,6 +38,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* JumpAction;
 
+	UPROPERTY(EditAnywhere, Category="Input")
+	UInputAction* ShootAction;
+
 	/** Move Input Action */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* MoveAction;
@@ -48,6 +52,12 @@ protected:
 	/** Mouse Look Input Action */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* MouseLookAction;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<AGun> GunClass;
+	
+	UPROPERTY(VisibleAnywhere)
+	AGun* Gun;
 
 public:
 
@@ -84,6 +94,11 @@ public:
 	/** Handles jump pressed inputs from either controls or UI interfaces */
 	UFUNCTION(BlueprintCallable, Category="Input")
 	virtual void DoJumpEnd();
+
+	UFUNCTION(BlueprintCallable, Category="Input")
+	void Shoot();
+
+	virtual void BeginPlay() override;
 
 public:
 

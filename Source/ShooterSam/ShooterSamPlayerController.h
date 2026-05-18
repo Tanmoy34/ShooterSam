@@ -3,6 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
+#include "HUDWidget.h"
 #include "GameFramework/PlayerController.h"
 #include "ShooterSamPlayerController.generated.h"
 
@@ -40,5 +42,11 @@ protected:
 
 	/** Input mapping context setup */
 	virtual void SetupInputComponent() override;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UHUDWidget> HudWidgetClass;
+
+	UPROPERTY(VisibleAnywhere)
+	UHUDWidget* HudWidget;
 
 };
